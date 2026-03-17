@@ -1,0 +1,1053 @@
+[0m[1mdata.aws_caller_identity.current: Reading...[0m[0m
+[0m[1mdata.aws_region.current: Reading...[0m[0m
+[0m[1mdata.aws_region.current: Read complete after 0s [id=us-east-1][0m
+[0m[1mdata.aws_caller_identity.current: Read complete after 0s [id=272830134396][0m
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  [32m+[0m create[0m
+ [36m<=[0m read (data resources)[0m
+
+Terraform will perform the following actions:
+
+[1m  # module.iam.aws_iam_role.developer[0m will be created
+[0m  [32m+[0m[0m resource "aws_iam_role" "developer" {
+      [32m+[0m[0m arn                   = (known after apply)
+      [32m+[0m[0m assume_role_policy    = jsonencode(
+            {
+              [32m+[0m[0m Statement = [
+                  [32m+[0m[0m {
+                      [32m+[0m[0m Action    = "sts:AssumeRole"
+                      [32m+[0m[0m Condition = {
+                          [32m+[0m[0m Bool = {
+                              [32m+[0m[0m "aws:MultiFactorAuthPresent" = "true"
+                            }
+                        }
+                      [32m+[0m[0m Effect    = "Allow"
+                      [32m+[0m[0m Principal = {
+                          [32m+[0m[0m AWS = "arn:aws:iam::272830134396:root"
+                        }
+                    },
+                ]
+              [32m+[0m[0m Version   = "2012-10-17"
+            }
+        )
+      [32m+[0m[0m create_date           = (known after apply)
+      [32m+[0m[0m force_detach_policies = false
+      [32m+[0m[0m id                    = (known after apply)
+      [32m+[0m[0m managed_policy_arns   = (known after apply)
+      [32m+[0m[0m max_session_duration  = 3600
+      [32m+[0m[0m name                  = "yuno-developer-sandbox"
+      [32m+[0m[0m name_prefix           = (known after apply)
+      [32m+[0m[0m path                  = "/"
+      [32m+[0m[0m tags                  = {
+          [32m+[0m[0m "Note" = "Sandbox access only - MFA required"
+          [32m+[0m[0m "Role" = "developer"
+        }
+      [32m+[0m[0m tags_all              = {
+          [32m+[0m[0m "Environment" = "sandbox"
+          [32m+[0m[0m "ManagedBy"   = "terraform"
+          [32m+[0m[0m "Note"        = "Sandbox access only - MFA required"
+          [32m+[0m[0m "Project"     = "yuno-secrets-management"
+          [32m+[0m[0m "Role"        = "developer"
+          [32m+[0m[0m "Team"        = "devsecops"
+        }
+      [32m+[0m[0m unique_id             = (known after apply)
+
+      [32m+[0m[0m inline_policy (known after apply)
+    }
+
+[1m  # module.iam.aws_iam_role.lambda_rotation[0m will be created
+[0m  [32m+[0m[0m resource "aws_iam_role" "lambda_rotation" {
+      [32m+[0m[0m arn                   = (known after apply)
+      [32m+[0m[0m assume_role_policy    = jsonencode(
+            {
+              [32m+[0m[0m Statement = [
+                  [32m+[0m[0m {
+                      [32m+[0m[0m Action    = "sts:AssumeRole"
+                      [32m+[0m[0m Effect    = "Allow"
+                      [32m+[0m[0m Principal = {
+                          [32m+[0m[0m Service = "lambda.amazonaws.com"
+                        }
+                    },
+                ]
+              [32m+[0m[0m Version   = "2012-10-17"
+            }
+        )
+      [32m+[0m[0m create_date           = (known after apply)
+      [32m+[0m[0m force_detach_policies = false
+      [32m+[0m[0m id                    = (known after apply)
+      [32m+[0m[0m managed_policy_arns   = (known after apply)
+      [32m+[0m[0m max_session_duration  = 3600
+      [32m+[0m[0m name                  = "yuno-lambda-rotation-sandbox"
+      [32m+[0m[0m name_prefix           = (known after apply)
+      [32m+[0m[0m path                  = "/"
+      [32m+[0m[0m tags                  = {
+          [32m+[0m[0m "Service" = "rotation-lambda"
+        }
+      [32m+[0m[0m tags_all              = {
+          [32m+[0m[0m "Environment" = "sandbox"
+          [32m+[0m[0m "ManagedBy"   = "terraform"
+          [32m+[0m[0m "Project"     = "yuno-secrets-management"
+          [32m+[0m[0m "Service"     = "rotation-lambda"
+          [32m+[0m[0m "Team"        = "devsecops"
+        }
+      [32m+[0m[0m unique_id             = (known after apply)
+
+      [32m+[0m[0m inline_policy (known after apply)
+    }
+
+[1m  # module.iam.aws_iam_role.payment_gateway[0m will be created
+[0m  [32m+[0m[0m resource "aws_iam_role" "payment_gateway" {
+      [32m+[0m[0m arn                   = (known after apply)
+      [32m+[0m[0m assume_role_policy    = jsonencode(
+            {
+              [32m+[0m[0m Statement = [
+                  [32m+[0m[0m {
+                      [32m+[0m[0m Action    = "sts:AssumeRole"
+                      [32m+[0m[0m Effect    = "Allow"
+                      [32m+[0m[0m Principal = {
+                          [32m+[0m[0m Service = "ec2.amazonaws.com"
+                        }
+                    },
+                ]
+              [32m+[0m[0m Version   = "2012-10-17"
+            }
+        )
+      [32m+[0m[0m create_date           = (known after apply)
+      [32m+[0m[0m force_detach_policies = false
+      [32m+[0m[0m id                    = (known after apply)
+      [32m+[0m[0m managed_policy_arns   = (known after apply)
+      [32m+[0m[0m max_session_duration  = 3600
+      [32m+[0m[0m name                  = "yuno-payment-gateway-sandbox"
+      [32m+[0m[0m name_prefix           = (known after apply)
+      [32m+[0m[0m path                  = "/"
+      [32m+[0m[0m tags                  = {
+          [32m+[0m[0m "PCIScope" = "true"
+          [32m+[0m[0m "Service"  = "payment-gateway"
+        }
+      [32m+[0m[0m tags_all              = {
+          [32m+[0m[0m "Environment" = "sandbox"
+          [32m+[0m[0m "ManagedBy"   = "terraform"
+          [32m+[0m[0m "PCIScope"    = "true"
+          [32m+[0m[0m "Project"     = "yuno-secrets-management"
+          [32m+[0m[0m "Service"     = "payment-gateway"
+          [32m+[0m[0m "Team"        = "devsecops"
+        }
+      [32m+[0m[0m unique_id             = (known after apply)
+
+      [32m+[0m[0m inline_policy (known after apply)
+    }
+
+[1m  # module.iam.aws_iam_role.reconciliation_service[0m will be created
+[0m  [32m+[0m[0m resource "aws_iam_role" "reconciliation_service" {
+      [32m+[0m[0m arn                   = (known after apply)
+      [32m+[0m[0m assume_role_policy    = jsonencode(
+            {
+              [32m+[0m[0m Statement = [
+                  [32m+[0m[0m {
+                      [32m+[0m[0m Action    = "sts:AssumeRole"
+                      [32m+[0m[0m Effect    = "Allow"
+                      [32m+[0m[0m Principal = {
+                          [32m+[0m[0m Service = "ec2.amazonaws.com"
+                        }
+                    },
+                ]
+              [32m+[0m[0m Version   = "2012-10-17"
+            }
+        )
+      [32m+[0m[0m create_date           = (known after apply)
+      [32m+[0m[0m force_detach_policies = false
+      [32m+[0m[0m id                    = (known after apply)
+      [32m+[0m[0m managed_policy_arns   = (known after apply)
+      [32m+[0m[0m max_session_duration  = 3600
+      [32m+[0m[0m name                  = "yuno-reconciliation-sandbox"
+      [32m+[0m[0m name_prefix           = (known after apply)
+      [32m+[0m[0m path                  = "/"
+      [32m+[0m[0m tags                  = {
+          [32m+[0m[0m "PCIScope" = "true"
+          [32m+[0m[0m "Service"  = "reconciliation-service"
+        }
+      [32m+[0m[0m tags_all              = {
+          [32m+[0m[0m "Environment" = "sandbox"
+          [32m+[0m[0m "ManagedBy"   = "terraform"
+          [32m+[0m[0m "PCIScope"    = "true"
+          [32m+[0m[0m "Project"     = "yuno-secrets-management"
+          [32m+[0m[0m "Service"     = "reconciliation-service"
+          [32m+[0m[0m "Team"        = "devsecops"
+        }
+      [32m+[0m[0m unique_id             = (known after apply)
+
+      [32m+[0m[0m inline_policy (known after apply)
+    }
+
+[1m  # module.iam.aws_iam_role_policy.developer_secrets[0m will be created
+[0m  [32m+[0m[0m resource "aws_iam_role_policy" "developer_secrets" {
+      [32m+[0m[0m id          = (known after apply)
+      [32m+[0m[0m name        = "yuno-developer-sandbox-policy"
+      [32m+[0m[0m name_prefix = (known after apply)
+      [32m+[0m[0m policy      = (known after apply)
+      [32m+[0m[0m role        = (known after apply)
+    }
+
+[1m  # module.iam.aws_iam_role_policy.lambda_rotation[0m will be created
+[0m  [32m+[0m[0m resource "aws_iam_role_policy" "lambda_rotation" {
+      [32m+[0m[0m id          = (known after apply)
+      [32m+[0m[0m name        = "yuno-lambda-rotation-policy-sandbox"
+      [32m+[0m[0m name_prefix = (known after apply)
+      [32m+[0m[0m policy      = (known after apply)
+      [32m+[0m[0m role        = (known after apply)
+    }
+
+[1m  # module.iam.aws_iam_role_policy.payment_gateway_secrets[0m will be created
+[0m  [32m+[0m[0m resource "aws_iam_role_policy" "payment_gateway_secrets" {
+      [32m+[0m[0m id          = (known after apply)
+      [32m+[0m[0m name        = "yuno-payment-gateway-secrets-policy"
+      [32m+[0m[0m name_prefix = (known after apply)
+      [32m+[0m[0m policy      = (known after apply)
+      [32m+[0m[0m role        = (known after apply)
+    }
+
+[1m  # module.iam.aws_iam_role_policy.reconciliation_secrets[0m will be created
+[0m  [32m+[0m[0m resource "aws_iam_role_policy" "reconciliation_secrets" {
+      [32m+[0m[0m id          = (known after apply)
+      [32m+[0m[0m name        = "yuno-reconciliation-secrets-policy"
+      [32m+[0m[0m name_prefix = (known after apply)
+      [32m+[0m[0m policy      = (known after apply)
+      [32m+[0m[0m role        = (known after apply)
+    }
+
+[1m  # module.iam.aws_iam_role_policy_attachment.lambda_vpc[0m will be created
+[0m  [32m+[0m[0m resource "aws_iam_role_policy_attachment" "lambda_vpc" {
+      [32m+[0m[0m id         = (known after apply)
+      [32m+[0m[0m policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+      [32m+[0m[0m role       = "yuno-lambda-rotation-sandbox"
+    }
+
+[1m  # module.iam.aws_kms_alias.secrets[0m will be created
+[0m  [32m+[0m[0m resource "aws_kms_alias" "secrets" {
+      [32m+[0m[0m arn            = (known after apply)
+      [32m+[0m[0m id             = (known after apply)
+      [32m+[0m[0m name           = "alias/yuno-secrets-sandbox"
+      [32m+[0m[0m name_prefix    = (known after apply)
+      [32m+[0m[0m target_key_arn = (known after apply)
+      [32m+[0m[0m target_key_id  = (known after apply)
+    }
+
+[1m  # module.iam.aws_kms_key.secrets[0m will be created
+[0m  [32m+[0m[0m resource "aws_kms_key" "secrets" {
+      [32m+[0m[0m arn                                = (known after apply)
+      [32m+[0m[0m bypass_policy_lockout_safety_check = false
+      [32m+[0m[0m customer_master_key_spec           = "SYMMETRIC_DEFAULT"
+      [32m+[0m[0m deletion_window_in_days            = 30
+      [32m+[0m[0m description                        = "Yuno secrets encryption key - sandbox"
+      [32m+[0m[0m enable_key_rotation                = true
+      [32m+[0m[0m id                                 = (known after apply)
+      [32m+[0m[0m is_enabled                         = true
+      [32m+[0m[0m key_id                             = (known after apply)
+      [32m+[0m[0m key_usage                          = "ENCRYPT_DECRYPT"
+      [32m+[0m[0m multi_region                       = (known after apply)
+      [32m+[0m[0m policy                             = (known after apply)
+      [32m+[0m[0m rotation_period_in_days            = (known after apply)
+      [32m+[0m[0m tags                               = {
+          [32m+[0m[0m "Name"        = "yuno-secrets-kms-sandbox"
+          [32m+[0m[0m "PCIScope"    = "true"
+          [32m+[0m[0m "Requirement" = "PCI-DSS-3.5"
+        }
+      [32m+[0m[0m tags_all                           = {
+          [32m+[0m[0m "Environment" = "sandbox"
+          [32m+[0m[0m "ManagedBy"   = "terraform"
+          [32m+[0m[0m "Name"        = "yuno-secrets-kms-sandbox"
+          [32m+[0m[0m "PCIScope"    = "true"
+          [32m+[0m[0m "Project"     = "yuno-secrets-management"
+          [32m+[0m[0m "Requirement" = "PCI-DSS-3.5"
+          [32m+[0m[0m "Team"        = "devsecops"
+        }
+    }
+
+[1m  # module.lambda.data.archive_file.rotation_lambda[0m will be read during apply
+  # (depends on a resource or a module with changes pending)
+[0m [36m<=[0m[0m data "archive_file" "rotation_lambda" {
+      [32m+[0m[0m id                  = (known after apply)
+      [32m+[0m[0m output_base64sha256 = (known after apply)
+      [32m+[0m[0m output_base64sha512 = (known after apply)
+      [32m+[0m[0m output_md5          = (known after apply)
+      [32m+[0m[0m output_path         = "modules/lambda/lambda_rotation.zip"
+      [32m+[0m[0m output_sha          = (known after apply)
+      [32m+[0m[0m output_sha256       = (known after apply)
+      [32m+[0m[0m output_sha512       = (known after apply)
+      [32m+[0m[0m output_size         = (known after apply)
+      [32m+[0m[0m source_dir          = "./../lambda/rotate_secret"
+      [32m+[0m[0m type                = "zip"
+    }
+
+[1m  # module.lambda.aws_cloudwatch_event_rule.rotation_check[0m will be created
+[0m  [32m+[0m[0m resource "aws_cloudwatch_event_rule" "rotation_check" {
+      [32m+[0m[0m arn                 = (known after apply)
+      [32m+[0m[0m description         = "Triggers rotation health check daily"
+      [32m+[0m[0m event_bus_name      = "default"
+      [32m+[0m[0m force_destroy       = false
+      [32m+[0m[0m id                  = (known after apply)
+      [32m+[0m[0m name                = "yuno-rotation-check-sandbox"
+      [32m+[0m[0m name_prefix         = (known after apply)
+      [32m+[0m[0m schedule_expression = "rate(1 day)"
+      [32m+[0m[0m tags                = {
+          [32m+[0m[0m "Purpose" = "rotation-monitoring"
+        }
+      [32m+[0m[0m tags_all            = {
+          [32m+[0m[0m "Environment" = "sandbox"
+          [32m+[0m[0m "ManagedBy"   = "terraform"
+          [32m+[0m[0m "Project"     = "yuno-secrets-management"
+          [32m+[0m[0m "Purpose"     = "rotation-monitoring"
+          [32m+[0m[0m "Team"        = "devsecops"
+        }
+    }
+
+[1m  # module.lambda.aws_cloudwatch_event_target.rotation_check[0m will be created
+[0m  [32m+[0m[0m resource "aws_cloudwatch_event_target" "rotation_check" {
+      [32m+[0m[0m arn            = (known after apply)
+      [32m+[0m[0m event_bus_name = "default"
+      [32m+[0m[0m force_destroy  = false
+      [32m+[0m[0m id             = (known after apply)
+      [32m+[0m[0m input          = jsonencode(
+            {
+              [32m+[0m[0m action = "health_check"
+            }
+        )
+      [32m+[0m[0m rule           = "yuno-rotation-check-sandbox"
+      [32m+[0m[0m target_id      = "RotationLambda"
+    }
+
+[1m  # module.lambda.aws_lambda_function.rotation[0m will be created
+[0m  [32m+[0m[0m resource "aws_lambda_function" "rotation" {
+      [32m+[0m[0m architectures                  = (known after apply)
+      [32m+[0m[0m arn                            = (known after apply)
+      [32m+[0m[0m code_sha256                    = (known after apply)
+      [32m+[0m[0m filename                       = "modules/lambda/lambda_rotation.zip"
+      [32m+[0m[0m function_name                  = "yuno-rotate-secret-sandbox"
+      [32m+[0m[0m handler                        = "handler.lambda_handler"
+      [32m+[0m[0m id                             = (known after apply)
+      [32m+[0m[0m invoke_arn                     = (known after apply)
+      [32m+[0m[0m kms_key_arn                    = (known after apply)
+      [32m+[0m[0m last_modified                  = (known after apply)
+      [32m+[0m[0m memory_size                    = 256
+      [32m+[0m[0m package_type                   = "Zip"
+      [32m+[0m[0m publish                        = false
+      [32m+[0m[0m qualified_arn                  = (known after apply)
+      [32m+[0m[0m qualified_invoke_arn           = (known after apply)
+      [32m+[0m[0m reserved_concurrent_executions = -1
+      [32m+[0m[0m role                           = (known after apply)
+      [32m+[0m[0m runtime                        = "python3.11"
+      [32m+[0m[0m signing_job_arn                = (known after apply)
+      [32m+[0m[0m signing_profile_version_arn    = (known after apply)
+      [32m+[0m[0m skip_destroy                   = false
+      [32m+[0m[0m source_code_hash               = (known after apply)
+      [32m+[0m[0m source_code_size               = (known after apply)
+      [32m+[0m[0m tags                           = {
+          [32m+[0m[0m "PCIScope" = "true"
+          [32m+[0m[0m "Purpose"  = "secret-rotation"
+        }
+      [32m+[0m[0m tags_all                       = {
+          [32m+[0m[0m "Environment" = "sandbox"
+          [32m+[0m[0m "ManagedBy"   = "terraform"
+          [32m+[0m[0m "PCIScope"    = "true"
+          [32m+[0m[0m "Project"     = "yuno-secrets-management"
+          [32m+[0m[0m "Purpose"     = "secret-rotation"
+          [32m+[0m[0m "Team"        = "devsecops"
+        }
+      [32m+[0m[0m timeout                        = 60
+      [32m+[0m[0m version                        = (known after apply)
+
+      [32m+[0m[0m environment {
+          [32m+[0m[0m variables = {
+              [32m+[0m[0m "ENVIRONMENT" = "sandbox"
+              [32m+[0m[0m "LOG_LEVEL"   = "INFO"
+            }
+        }
+
+      [32m+[0m[0m ephemeral_storage (known after apply)
+
+      [32m+[0m[0m logging_config (known after apply)
+
+      [32m+[0m[0m tracing_config {
+          [32m+[0m[0m mode = "Active"
+        }
+    }
+
+[1m  # module.lambda.aws_lambda_permission.eventbridge[0m will be created
+[0m  [32m+[0m[0m resource "aws_lambda_permission" "eventbridge" {
+      [32m+[0m[0m action              = "lambda:InvokeFunction"
+      [32m+[0m[0m function_name       = "yuno-rotate-secret-sandbox"
+      [32m+[0m[0m id                  = (known after apply)
+      [32m+[0m[0m principal           = "events.amazonaws.com"
+      [32m+[0m[0m source_arn          = (known after apply)
+      [32m+[0m[0m statement_id        = "AllowEventBridgeInvoke"
+      [32m+[0m[0m statement_id_prefix = (known after apply)
+    }
+
+[1m  # module.lambda.aws_lambda_permission.secrets_manager[0m will be created
+[0m  [32m+[0m[0m resource "aws_lambda_permission" "secrets_manager" {
+      [32m+[0m[0m action              = "lambda:InvokeFunction"
+      [32m+[0m[0m function_name       = "yuno-rotate-secret-sandbox"
+      [32m+[0m[0m id                  = (known after apply)
+      [32m+[0m[0m principal           = "secretsmanager.amazonaws.com"
+      [32m+[0m[0m statement_id        = "AllowSecretsManagerInvoke"
+      [32m+[0m[0m statement_id_prefix = (known after apply)
+    }
+
+[1m  # module.monitoring.aws_cloudtrail.secrets_audit[0m will be created
+[0m  [32m+[0m[0m resource "aws_cloudtrail" "secrets_audit" {
+      [32m+[0m[0m arn                           = (known after apply)
+      [32m+[0m[0m cloud_watch_logs_group_arn    = (known after apply)
+      [32m+[0m[0m cloud_watch_logs_role_arn     = (known after apply)
+      [32m+[0m[0m enable_log_file_validation    = true
+      [32m+[0m[0m enable_logging                = true
+      [32m+[0m[0m home_region                   = (known after apply)
+      [32m+[0m[0m id                            = (known after apply)
+      [32m+[0m[0m include_global_service_events = true
+      [32m+[0m[0m is_multi_region_trail         = false
+      [32m+[0m[0m is_organization_trail         = false
+      [32m+[0m[0m name                          = "yuno-secrets-audit-sandbox"
+      [32m+[0m[0m s3_bucket_name                = (known after apply)
+      [32m+[0m[0m sns_topic_arn                 = (known after apply)
+      [32m+[0m[0m tags                          = {
+          [32m+[0m[0m "Purpose"     = "pci-dss-audit"
+          [32m+[0m[0m "Requirement" = "PCI-DSS-10"
+        }
+      [32m+[0m[0m tags_all                      = {
+          [32m+[0m[0m "Environment" = "sandbox"
+          [32m+[0m[0m "ManagedBy"   = "terraform"
+          [32m+[0m[0m "Project"     = "yuno-secrets-management"
+          [32m+[0m[0m "Purpose"     = "pci-dss-audit"
+          [32m+[0m[0m "Requirement" = "PCI-DSS-10"
+          [32m+[0m[0m "Team"        = "devsecops"
+        }
+
+      [32m+[0m[0m event_selector {
+          [32m+[0m[0m include_management_events = true
+          [32m+[0m[0m read_write_type           = "All"
+        }
+    }
+
+[1m  # module.monitoring.aws_cloudwatch_log_group.lambda_logs[0m will be created
+[0m  [32m+[0m[0m resource "aws_cloudwatch_log_group" "lambda_logs" {
+      [32m+[0m[0m arn               = (known after apply)
+      [32m+[0m[0m id                = (known after apply)
+      [32m+[0m[0m log_group_class   = (known after apply)
+      [32m+[0m[0m name              = "/aws/lambda/yuno-rotate-secret-sandbox"
+      [32m+[0m[0m name_prefix       = (known after apply)
+      [32m+[0m[0m retention_in_days = 365
+      [32m+[0m[0m skip_destroy      = false
+      [32m+[0m[0m tags              = {
+          [32m+[0m[0m "Purpose" = "rotation-lambda-logs"
+        }
+      [32m+[0m[0m tags_all          = {
+          [32m+[0m[0m "Environment" = "sandbox"
+          [32m+[0m[0m "ManagedBy"   = "terraform"
+          [32m+[0m[0m "Project"     = "yuno-secrets-management"
+          [32m+[0m[0m "Purpose"     = "rotation-lambda-logs"
+          [32m+[0m[0m "Team"        = "devsecops"
+        }
+    }
+
+[1m  # module.monitoring.aws_cloudwatch_log_group.secrets_audit[0m will be created
+[0m  [32m+[0m[0m resource "aws_cloudwatch_log_group" "secrets_audit" {
+      [32m+[0m[0m arn               = (known after apply)
+      [32m+[0m[0m id                = (known after apply)
+      [32m+[0m[0m log_group_class   = (known after apply)
+      [32m+[0m[0m name              = "/yuno/secrets-audit/sandbox"
+      [32m+[0m[0m name_prefix       = (known after apply)
+      [32m+[0m[0m retention_in_days = 365
+      [32m+[0m[0m skip_destroy      = false
+      [32m+[0m[0m tags              = {
+          [32m+[0m[0m "Purpose"     = "pci-dss-audit-trail"
+          [32m+[0m[0m "Requirement" = "PCI-DSS-10"
+          [32m+[0m[0m "Tamper"      = "cloudtrail-protected"
+        }
+      [32m+[0m[0m tags_all          = {
+          [32m+[0m[0m "Environment" = "sandbox"
+          [32m+[0m[0m "ManagedBy"   = "terraform"
+          [32m+[0m[0m "Project"     = "yuno-secrets-management"
+          [32m+[0m[0m "Purpose"     = "pci-dss-audit-trail"
+          [32m+[0m[0m "Requirement" = "PCI-DSS-10"
+          [32m+[0m[0m "Tamper"      = "cloudtrail-protected"
+          [32m+[0m[0m "Team"        = "devsecops"
+        }
+    }
+
+[1m  # module.monitoring.aws_cloudwatch_log_metric_filter.unauthorized_access[0m will be created
+[0m  [32m+[0m[0m resource "aws_cloudwatch_log_metric_filter" "unauthorized_access" {
+      [32m+[0m[0m id             = (known after apply)
+      [32m+[0m[0m log_group_name = "/yuno/secrets-audit/sandbox"
+      [32m+[0m[0m name           = "yuno-unauthorized-secret-access"
+      [32m+[0m[0m pattern        = "{ $.errorCode = \"AccessDenied\" && $.eventSource = \"secretsmanager.amazonaws.com\" }"
+
+      [32m+[0m[0m metric_transformation {
+          [32m+[0m[0m name      = "UnauthorizedSecretAccess"
+          [32m+[0m[0m namespace = "Yuno/Security"
+          [32m+[0m[0m unit      = "None"
+          [32m+[0m[0m value     = "1"
+        }
+    }
+
+[1m  # module.monitoring.aws_cloudwatch_metric_alarm.rotation_failure[0m will be created
+[0m  [32m+[0m[0m resource "aws_cloudwatch_metric_alarm" "rotation_failure" {
+      [32m+[0m[0m actions_enabled                       = true
+      [32m+[0m[0m alarm_actions                         = (known after apply)
+      [32m+[0m[0m alarm_description                     = "Secret rotation Lambda failed — immediate action required"
+      [32m+[0m[0m alarm_name                            = "yuno-rotation-failure-sandbox"
+      [32m+[0m[0m arn                                   = (known after apply)
+      [32m+[0m[0m comparison_operator                   = "GreaterThanThreshold"
+      [32m+[0m[0m dimensions                            = {
+          [32m+[0m[0m "FunctionName" = "yuno-rotate-secret-sandbox"
+        }
+      [32m+[0m[0m evaluate_low_sample_count_percentiles = (known after apply)
+      [32m+[0m[0m evaluation_periods                    = 1
+      [32m+[0m[0m id                                    = (known after apply)
+      [32m+[0m[0m metric_name                           = "Errors"
+      [32m+[0m[0m namespace                             = "AWS/Lambda"
+      [32m+[0m[0m ok_actions                            = (known after apply)
+      [32m+[0m[0m period                                = 300
+      [32m+[0m[0m statistic                             = "Sum"
+      [32m+[0m[0m tags_all                              = {
+          [32m+[0m[0m "Environment" = "sandbox"
+          [32m+[0m[0m "ManagedBy"   = "terraform"
+          [32m+[0m[0m "Project"     = "yuno-secrets-management"
+          [32m+[0m[0m "Team"        = "devsecops"
+        }
+      [32m+[0m[0m threshold                             = 0
+      [32m+[0m[0m treat_missing_data                    = "notBreaching"
+    }
+
+[1m  # module.monitoring.aws_cloudwatch_metric_alarm.unauthorized_access[0m will be created
+[0m  [32m+[0m[0m resource "aws_cloudwatch_metric_alarm" "unauthorized_access" {
+      [32m+[0m[0m actions_enabled                       = true
+      [32m+[0m[0m alarm_actions                         = (known after apply)
+      [32m+[0m[0m alarm_description                     = "Unauthorized attempt to access secrets detected"
+      [32m+[0m[0m alarm_name                            = "yuno-unauthorized-access-sandbox"
+      [32m+[0m[0m arn                                   = (known after apply)
+      [32m+[0m[0m comparison_operator                   = "GreaterThanThreshold"
+      [32m+[0m[0m evaluate_low_sample_count_percentiles = (known after apply)
+      [32m+[0m[0m evaluation_periods                    = 1
+      [32m+[0m[0m id                                    = (known after apply)
+      [32m+[0m[0m metric_name                           = "UnauthorizedSecretAccess"
+      [32m+[0m[0m namespace                             = "Yuno/Security"
+      [32m+[0m[0m period                                = 300
+      [32m+[0m[0m statistic                             = "Sum"
+      [32m+[0m[0m tags_all                              = {
+          [32m+[0m[0m "Environment" = "sandbox"
+          [32m+[0m[0m "ManagedBy"   = "terraform"
+          [32m+[0m[0m "Project"     = "yuno-secrets-management"
+          [32m+[0m[0m "Team"        = "devsecops"
+        }
+      [32m+[0m[0m threshold                             = 0
+      [32m+[0m[0m treat_missing_data                    = "notBreaching"
+    }
+
+[1m  # module.monitoring.aws_iam_role.cloudtrail_cw[0m will be created
+[0m  [32m+[0m[0m resource "aws_iam_role" "cloudtrail_cw" {
+      [32m+[0m[0m arn                   = (known after apply)
+      [32m+[0m[0m assume_role_policy    = jsonencode(
+            {
+              [32m+[0m[0m Statement = [
+                  [32m+[0m[0m {
+                      [32m+[0m[0m Action    = "sts:AssumeRole"
+                      [32m+[0m[0m Effect    = "Allow"
+                      [32m+[0m[0m Principal = {
+                          [32m+[0m[0m Service = "cloudtrail.amazonaws.com"
+                        }
+                    },
+                ]
+              [32m+[0m[0m Version   = "2012-10-17"
+            }
+        )
+      [32m+[0m[0m create_date           = (known after apply)
+      [32m+[0m[0m force_detach_policies = false
+      [32m+[0m[0m id                    = (known after apply)
+      [32m+[0m[0m managed_policy_arns   = (known after apply)
+      [32m+[0m[0m max_session_duration  = 3600
+      [32m+[0m[0m name                  = "yuno-cloudtrail-cw-sandbox"
+      [32m+[0m[0m name_prefix           = (known after apply)
+      [32m+[0m[0m path                  = "/"
+      [32m+[0m[0m tags_all              = {
+          [32m+[0m[0m "Environment" = "sandbox"
+          [32m+[0m[0m "ManagedBy"   = "terraform"
+          [32m+[0m[0m "Project"     = "yuno-secrets-management"
+          [32m+[0m[0m "Team"        = "devsecops"
+        }
+      [32m+[0m[0m unique_id             = (known after apply)
+
+      [32m+[0m[0m inline_policy (known after apply)
+    }
+
+[1m  # module.monitoring.aws_iam_role_policy.cloudtrail_cw[0m will be created
+[0m  [32m+[0m[0m resource "aws_iam_role_policy" "cloudtrail_cw" {
+      [32m+[0m[0m id          = (known after apply)
+      [32m+[0m[0m name        = "yuno-cloudtrail-cw-policy"
+      [32m+[0m[0m name_prefix = (known after apply)
+      [32m+[0m[0m policy      = (known after apply)
+      [32m+[0m[0m role        = (known after apply)
+    }
+
+[1m  # module.monitoring.aws_s3_bucket.cloudtrail[0m will be created
+[0m  [32m+[0m[0m resource "aws_s3_bucket" "cloudtrail" {
+      [32m+[0m[0m acceleration_status         = (known after apply)
+      [32m+[0m[0m acl                         = (known after apply)
+      [32m+[0m[0m arn                         = (known after apply)
+      [32m+[0m[0m bucket                      = "yuno-cloudtrail-audit-sandbox-272830134396"
+      [32m+[0m[0m bucket_domain_name          = (known after apply)
+      [32m+[0m[0m bucket_prefix               = (known after apply)
+      [32m+[0m[0m bucket_regional_domain_name = (known after apply)
+      [32m+[0m[0m force_destroy               = false
+      [32m+[0m[0m hosted_zone_id              = (known after apply)
+      [32m+[0m[0m id                          = (known after apply)
+      [32m+[0m[0m object_lock_enabled         = (known after apply)
+      [32m+[0m[0m policy                      = (known after apply)
+      [32m+[0m[0m region                      = (known after apply)
+      [32m+[0m[0m request_payer               = (known after apply)
+      [32m+[0m[0m tags                        = {
+          [32m+[0m[0m "PCIScope"    = "true"
+          [32m+[0m[0m "Purpose"     = "cloudtrail-audit"
+          [32m+[0m[0m "Requirement" = "PCI-DSS-10"
+        }
+      [32m+[0m[0m tags_all                    = {
+          [32m+[0m[0m "Environment" = "sandbox"
+          [32m+[0m[0m "ManagedBy"   = "terraform"
+          [32m+[0m[0m "PCIScope"    = "true"
+          [32m+[0m[0m "Project"     = "yuno-secrets-management"
+          [32m+[0m[0m "Purpose"     = "cloudtrail-audit"
+          [32m+[0m[0m "Requirement" = "PCI-DSS-10"
+          [32m+[0m[0m "Team"        = "devsecops"
+        }
+      [32m+[0m[0m website_domain              = (known after apply)
+      [32m+[0m[0m website_endpoint            = (known after apply)
+
+      [32m+[0m[0m cors_rule (known after apply)
+
+      [32m+[0m[0m grant (known after apply)
+
+      [32m+[0m[0m lifecycle_rule (known after apply)
+
+      [32m+[0m[0m logging (known after apply)
+
+      [32m+[0m[0m object_lock_configuration (known after apply)
+
+      [32m+[0m[0m replication_configuration (known after apply)
+
+      [32m+[0m[0m server_side_encryption_configuration (known after apply)
+
+      [32m+[0m[0m versioning (known after apply)
+
+      [32m+[0m[0m website (known after apply)
+    }
+
+[1m  # module.monitoring.aws_s3_bucket_policy.cloudtrail[0m will be created
+[0m  [32m+[0m[0m resource "aws_s3_bucket_policy" "cloudtrail" {
+      [32m+[0m[0m bucket = (known after apply)
+      [32m+[0m[0m id     = (known after apply)
+      [32m+[0m[0m policy = (known after apply)
+    }
+
+[1m  # module.monitoring.aws_s3_bucket_public_access_block.cloudtrail[0m will be created
+[0m  [32m+[0m[0m resource "aws_s3_bucket_public_access_block" "cloudtrail" {
+      [32m+[0m[0m block_public_acls       = true
+      [32m+[0m[0m block_public_policy     = true
+      [32m+[0m[0m bucket                  = (known after apply)
+      [32m+[0m[0m id                      = (known after apply)
+      [32m+[0m[0m ignore_public_acls      = true
+      [32m+[0m[0m restrict_public_buckets = true
+    }
+
+[1m  # module.monitoring.aws_s3_bucket_server_side_encryption_configuration.cloudtrail[0m will be created
+[0m  [32m+[0m[0m resource "aws_s3_bucket_server_side_encryption_configuration" "cloudtrail" {
+      [32m+[0m[0m bucket = (known after apply)
+      [32m+[0m[0m id     = (known after apply)
+
+      [32m+[0m[0m rule {
+          [32m+[0m[0m apply_server_side_encryption_by_default {
+              [32m+[0m[0m sse_algorithm     = "aws:kms"
+                [90m# (1 unchanged attribute hidden)[0m[0m
+            }
+        }
+    }
+
+[1m  # module.monitoring.aws_s3_bucket_versioning.cloudtrail[0m will be created
+[0m  [32m+[0m[0m resource "aws_s3_bucket_versioning" "cloudtrail" {
+      [32m+[0m[0m bucket = (known after apply)
+      [32m+[0m[0m id     = (known after apply)
+
+      [32m+[0m[0m versioning_configuration {
+          [32m+[0m[0m mfa_delete = (known after apply)
+          [32m+[0m[0m status     = "Enabled"
+        }
+    }
+
+[1m  # module.monitoring.aws_sns_topic.rotation_alerts[0m will be created
+[0m  [32m+[0m[0m resource "aws_sns_topic" "rotation_alerts" {
+      [32m+[0m[0m arn                         = (known after apply)
+      [32m+[0m[0m beginning_archive_time      = (known after apply)
+      [32m+[0m[0m content_based_deduplication = false
+      [32m+[0m[0m fifo_throughput_scope       = (known after apply)
+      [32m+[0m[0m fifo_topic                  = false
+      [32m+[0m[0m id                          = (known after apply)
+      [32m+[0m[0m kms_master_key_id           = "alias/aws/sns"
+      [32m+[0m[0m name                        = "yuno-rotation-alerts-sandbox"
+      [32m+[0m[0m name_prefix                 = (known after apply)
+      [32m+[0m[0m owner                       = (known after apply)
+      [32m+[0m[0m policy                      = (known after apply)
+      [32m+[0m[0m signature_version           = (known after apply)
+      [32m+[0m[0m tags                        = {
+          [32m+[0m[0m "Purpose" = "rotation-alerting"
+        }
+      [32m+[0m[0m tags_all                    = {
+          [32m+[0m[0m "Environment" = "sandbox"
+          [32m+[0m[0m "ManagedBy"   = "terraform"
+          [32m+[0m[0m "Project"     = "yuno-secrets-management"
+          [32m+[0m[0m "Purpose"     = "rotation-alerting"
+          [32m+[0m[0m "Team"        = "devsecops"
+        }
+      [32m+[0m[0m tracing_config              = (known after apply)
+    }
+
+[1m  # module.monitoring.aws_sns_topic_subscription.email[0m will be created
+[0m  [32m+[0m[0m resource "aws_sns_topic_subscription" "email" {
+      [32m+[0m[0m arn                             = (known after apply)
+      [32m+[0m[0m confirmation_timeout_in_minutes = 1
+      [32m+[0m[0m confirmation_was_authenticated  = (known after apply)
+      [32m+[0m[0m endpoint                        = "davidmoeg@gmail.com"
+      [32m+[0m[0m endpoint_auto_confirms          = false
+      [32m+[0m[0m filter_policy_scope             = (known after apply)
+      [32m+[0m[0m id                              = (known after apply)
+      [32m+[0m[0m owner_id                        = (known after apply)
+      [32m+[0m[0m pending_confirmation            = (known after apply)
+      [32m+[0m[0m protocol                        = "email"
+      [32m+[0m[0m raw_message_delivery            = false
+      [32m+[0m[0m topic_arn                       = (known after apply)
+    }
+
+[1m  # module.secrets.aws_secretsmanager_secret.vortexpay_api_key_merchant_123[0m will be created
+[0m  [32m+[0m[0m resource "aws_secretsmanager_secret" "vortexpay_api_key_merchant_123" {
+      [32m+[0m[0m arn                            = (known after apply)
+      [32m+[0m[0m description                    = "VortexPay API key for merchant 123 (Thailand)"
+      [32m+[0m[0m force_overwrite_replica_secret = false
+      [32m+[0m[0m id                             = (known after apply)
+      [32m+[0m[0m kms_key_id                     = (known after apply)
+      [32m+[0m[0m name                           = "yuno/sandbox/vortexpay/merchant-123/api-key"
+      [32m+[0m[0m name_prefix                    = (known after apply)
+      [32m+[0m[0m policy                         = (known after apply)
+      [32m+[0m[0m recovery_window_in_days        = 7
+      [32m+[0m[0m tags                           = {
+          [32m+[0m[0m "Country"     = "TH"
+          [32m+[0m[0m "MerchantID"  = "123"
+          [32m+[0m[0m "PCIScope"    = "true"
+          [32m+[0m[0m "Provider"    = "vortexpay"
+          [32m+[0m[0m "Requirement" = "PCI-DSS-8.3.2"
+          [32m+[0m[0m "SecretType"  = "api-key"
+        }
+      [32m+[0m[0m tags_all                       = {
+          [32m+[0m[0m "Country"     = "TH"
+          [32m+[0m[0m "Environment" = "sandbox"
+          [32m+[0m[0m "ManagedBy"   = "terraform"
+          [32m+[0m[0m "MerchantID"  = "123"
+          [32m+[0m[0m "PCIScope"    = "true"
+          [32m+[0m[0m "Project"     = "yuno-secrets-management"
+          [32m+[0m[0m "Provider"    = "vortexpay"
+          [32m+[0m[0m "Requirement" = "PCI-DSS-8.3.2"
+          [32m+[0m[0m "SecretType"  = "api-key"
+          [32m+[0m[0m "Team"        = "devsecops"
+        }
+
+      [32m+[0m[0m replica (known after apply)
+    }
+
+[1m  # module.secrets.aws_secretsmanager_secret.vortexpay_api_key_merchant_456[0m will be created
+[0m  [32m+[0m[0m resource "aws_secretsmanager_secret" "vortexpay_api_key_merchant_456" {
+      [32m+[0m[0m arn                            = (known after apply)
+      [32m+[0m[0m description                    = "VortexPay API key for merchant 456 (Indonesia)"
+      [32m+[0m[0m force_overwrite_replica_secret = false
+      [32m+[0m[0m id                             = (known after apply)
+      [32m+[0m[0m kms_key_id                     = (known after apply)
+      [32m+[0m[0m name                           = "yuno/sandbox/vortexpay/merchant-456/api-key"
+      [32m+[0m[0m name_prefix                    = (known after apply)
+      [32m+[0m[0m policy                         = (known after apply)
+      [32m+[0m[0m recovery_window_in_days        = 7
+      [32m+[0m[0m tags                           = {
+          [32m+[0m[0m "Country"    = "ID"
+          [32m+[0m[0m "MerchantID" = "456"
+          [32m+[0m[0m "PCIScope"   = "true"
+          [32m+[0m[0m "Provider"   = "vortexpay"
+        }
+      [32m+[0m[0m tags_all                       = {
+          [32m+[0m[0m "Country"     = "ID"
+          [32m+[0m[0m "Environment" = "sandbox"
+          [32m+[0m[0m "ManagedBy"   = "terraform"
+          [32m+[0m[0m "MerchantID"  = "456"
+          [32m+[0m[0m "PCIScope"    = "true"
+          [32m+[0m[0m "Project"     = "yuno-secrets-management"
+          [32m+[0m[0m "Provider"    = "vortexpay"
+          [32m+[0m[0m "Team"        = "devsecops"
+        }
+
+      [32m+[0m[0m replica (known after apply)
+    }
+
+[1m  # module.secrets.aws_secretsmanager_secret.vortexpay_api_key_merchant_789[0m will be created
+[0m  [32m+[0m[0m resource "aws_secretsmanager_secret" "vortexpay_api_key_merchant_789" {
+      [32m+[0m[0m arn                            = (known after apply)
+      [32m+[0m[0m description                    = "VortexPay API key for merchant 789 (Philippines)"
+      [32m+[0m[0m force_overwrite_replica_secret = false
+      [32m+[0m[0m id                             = (known after apply)
+      [32m+[0m[0m kms_key_id                     = (known after apply)
+      [32m+[0m[0m name                           = "yuno/sandbox/vortexpay/merchant-789/api-key"
+      [32m+[0m[0m name_prefix                    = (known after apply)
+      [32m+[0m[0m policy                         = (known after apply)
+      [32m+[0m[0m recovery_window_in_days        = 7
+      [32m+[0m[0m tags                           = {
+          [32m+[0m[0m "Country"    = "PH"
+          [32m+[0m[0m "MerchantID" = "789"
+          [32m+[0m[0m "PCIScope"   = "true"
+          [32m+[0m[0m "Provider"   = "vortexpay"
+        }
+      [32m+[0m[0m tags_all                       = {
+          [32m+[0m[0m "Country"     = "PH"
+          [32m+[0m[0m "Environment" = "sandbox"
+          [32m+[0m[0m "ManagedBy"   = "terraform"
+          [32m+[0m[0m "MerchantID"  = "789"
+          [32m+[0m[0m "PCIScope"    = "true"
+          [32m+[0m[0m "Project"     = "yuno-secrets-management"
+          [32m+[0m[0m "Provider"    = "vortexpay"
+          [32m+[0m[0m "Team"        = "devsecops"
+        }
+
+      [32m+[0m[0m replica (known after apply)
+    }
+
+[1m  # module.secrets.aws_secretsmanager_secret.vortexpay_oauth_merchant_123[0m will be created
+[0m  [32m+[0m[0m resource "aws_secretsmanager_secret" "vortexpay_oauth_merchant_123" {
+      [32m+[0m[0m arn                            = (known after apply)
+      [32m+[0m[0m description                    = "VortexPay OAuth2 client credentials for merchant 123"
+      [32m+[0m[0m force_overwrite_replica_secret = false
+      [32m+[0m[0m id                             = (known after apply)
+      [32m+[0m[0m kms_key_id                     = (known after apply)
+      [32m+[0m[0m name                           = "yuno/sandbox/vortexpay/merchant-123/oauth-credentials"
+      [32m+[0m[0m name_prefix                    = (known after apply)
+      [32m+[0m[0m policy                         = (known after apply)
+      [32m+[0m[0m recovery_window_in_days        = 7
+      [32m+[0m[0m tags                           = {
+          [32m+[0m[0m "MerchantID"  = "123"
+          [32m+[0m[0m "PCIScope"    = "true"
+          [32m+[0m[0m "Provider"    = "vortexpay"
+          [32m+[0m[0m "Requirement" = "PCI-DSS-8.3.2"
+          [32m+[0m[0m "SecretType"  = "oauth-credentials"
+        }
+      [32m+[0m[0m tags_all                       = {
+          [32m+[0m[0m "Environment" = "sandbox"
+          [32m+[0m[0m "ManagedBy"   = "terraform"
+          [32m+[0m[0m "MerchantID"  = "123"
+          [32m+[0m[0m "PCIScope"    = "true"
+          [32m+[0m[0m "Project"     = "yuno-secrets-management"
+          [32m+[0m[0m "Provider"    = "vortexpay"
+          [32m+[0m[0m "Requirement" = "PCI-DSS-8.3.2"
+          [32m+[0m[0m "SecretType"  = "oauth-credentials"
+          [32m+[0m[0m "Team"        = "devsecops"
+        }
+
+      [32m+[0m[0m replica (known after apply)
+    }
+
+[1m  # module.secrets.aws_secretsmanager_secret.vortexpay_sandbox_merchant_123[0m will be created
+[0m  [32m+[0m[0m resource "aws_secretsmanager_secret" "vortexpay_sandbox_merchant_123" {
+      [32m+[0m[0m arn                            = (known after apply)
+      [32m+[0m[0m description                    = "VortexPay SANDBOX API key for merchant 123 — safe for developers"
+      [32m+[0m[0m force_overwrite_replica_secret = false
+      [32m+[0m[0m id                             = (known after apply)
+      [32m+[0m[0m kms_key_id                     = (known after apply)
+      [32m+[0m[0m name                           = "yuno/sandbox/vortexpay/merchant-123/api-key"
+      [32m+[0m[0m name_prefix                    = (known after apply)
+      [32m+[0m[0m policy                         = (known after apply)
+      [32m+[0m[0m recovery_window_in_days        = 7
+      [32m+[0m[0m tags                           = {
+          [32m+[0m[0m "DeveloperAccess" = "true"
+          [32m+[0m[0m "Environment"     = "sandbox"
+          [32m+[0m[0m "MerchantID"      = "123"
+        }
+      [32m+[0m[0m tags_all                       = {
+          [32m+[0m[0m "DeveloperAccess" = "true"
+          [32m+[0m[0m "Environment"     = "sandbox"
+          [32m+[0m[0m "ManagedBy"       = "terraform"
+          [32m+[0m[0m "MerchantID"      = "123"
+          [32m+[0m[0m "Project"         = "yuno-secrets-management"
+          [32m+[0m[0m "Team"            = "devsecops"
+        }
+
+      [32m+[0m[0m replica (known after apply)
+    }
+
+[1m  # module.secrets.aws_secretsmanager_secret.vortexpay_webhook_secret_merchant_123[0m will be created
+[0m  [32m+[0m[0m resource "aws_secretsmanager_secret" "vortexpay_webhook_secret_merchant_123" {
+      [32m+[0m[0m arn                            = (known after apply)
+      [32m+[0m[0m description                    = "VortexPay webhook signing secret for merchant 123"
+      [32m+[0m[0m force_overwrite_replica_secret = false
+      [32m+[0m[0m id                             = (known after apply)
+      [32m+[0m[0m kms_key_id                     = (known after apply)
+      [32m+[0m[0m name                           = "yuno/sandbox/vortexpay/merchant-123/webhook-secret"
+      [32m+[0m[0m name_prefix                    = (known after apply)
+      [32m+[0m[0m policy                         = (known after apply)
+      [32m+[0m[0m recovery_window_in_days        = 7
+      [32m+[0m[0m tags                           = {
+          [32m+[0m[0m "MerchantID"  = "123"
+          [32m+[0m[0m "PCIScope"    = "true"
+          [32m+[0m[0m "Provider"    = "vortexpay"
+          [32m+[0m[0m "Requirement" = "PCI-DSS-8.3.2"
+          [32m+[0m[0m "SecretType"  = "webhook-secret"
+        }
+      [32m+[0m[0m tags_all                       = {
+          [32m+[0m[0m "Environment" = "sandbox"
+          [32m+[0m[0m "ManagedBy"   = "terraform"
+          [32m+[0m[0m "MerchantID"  = "123"
+          [32m+[0m[0m "PCIScope"    = "true"
+          [32m+[0m[0m "Project"     = "yuno-secrets-management"
+          [32m+[0m[0m "Provider"    = "vortexpay"
+          [32m+[0m[0m "Requirement" = "PCI-DSS-8.3.2"
+          [32m+[0m[0m "SecretType"  = "webhook-secret"
+          [32m+[0m[0m "Team"        = "devsecops"
+        }
+
+      [32m+[0m[0m replica (known after apply)
+    }
+
+[1m  # module.secrets.aws_secretsmanager_secret_rotation.vortexpay_api_key_merchant_123[0m will be created
+[0m  [32m+[0m[0m resource "aws_secretsmanager_secret_rotation" "vortexpay_api_key_merchant_123" {
+      [32m+[0m[0m id                  = (known after apply)
+      [32m+[0m[0m rotate_immediately  = true
+      [32m+[0m[0m rotation_enabled    = (known after apply)
+      [32m+[0m[0m rotation_lambda_arn = (known after apply)
+      [32m+[0m[0m secret_id           = (known after apply)
+
+      [32m+[0m[0m rotation_rules {
+          [32m+[0m[0m automatically_after_days = 90
+        }
+    }
+
+[1m  # module.secrets.aws_secretsmanager_secret_rotation.vortexpay_oauth_merchant_123[0m will be created
+[0m  [32m+[0m[0m resource "aws_secretsmanager_secret_rotation" "vortexpay_oauth_merchant_123" {
+      [32m+[0m[0m id                  = (known after apply)
+      [32m+[0m[0m rotate_immediately  = true
+      [32m+[0m[0m rotation_enabled    = (known after apply)
+      [32m+[0m[0m rotation_lambda_arn = (known after apply)
+      [32m+[0m[0m secret_id           = (known after apply)
+
+      [32m+[0m[0m rotation_rules {
+          [32m+[0m[0m automatically_after_days = 90
+        }
+    }
+
+[1m  # module.secrets.aws_secretsmanager_secret_rotation.vortexpay_webhook_merchant_123[0m will be created
+[0m  [32m+[0m[0m resource "aws_secretsmanager_secret_rotation" "vortexpay_webhook_merchant_123" {
+      [32m+[0m[0m id                  = (known after apply)
+      [32m+[0m[0m rotate_immediately  = true
+      [32m+[0m[0m rotation_enabled    = (known after apply)
+      [32m+[0m[0m rotation_lambda_arn = (known after apply)
+      [32m+[0m[0m secret_id           = (known after apply)
+
+      [32m+[0m[0m rotation_rules {
+          [32m+[0m[0m automatically_after_days = 90
+        }
+    }
+
+[1m  # module.secrets.aws_secretsmanager_secret_version.vortexpay_api_key_merchant_123[0m will be created
+[0m  [32m+[0m[0m resource "aws_secretsmanager_secret_version" "vortexpay_api_key_merchant_123" {
+      [32m+[0m[0m arn                  = (known after apply)
+      [32m+[0m[0m has_secret_string_wo = (known after apply)
+      [32m+[0m[0m id                   = (known after apply)
+      [32m+[0m[0m secret_id            = (known after apply)
+      [32m+[0m[0m secret_string        = (sensitive value)
+      [32m+[0m[0m secret_string_wo     = (write-only attribute)
+      [32m+[0m[0m version_id           = (known after apply)
+      [32m+[0m[0m version_stages       = (known after apply)
+    }
+
+[1m  # module.secrets.aws_secretsmanager_secret_version.vortexpay_api_key_merchant_456[0m will be created
+[0m  [32m+[0m[0m resource "aws_secretsmanager_secret_version" "vortexpay_api_key_merchant_456" {
+      [32m+[0m[0m arn                  = (known after apply)
+      [32m+[0m[0m has_secret_string_wo = (known after apply)
+      [32m+[0m[0m id                   = (known after apply)
+      [32m+[0m[0m secret_id            = (known after apply)
+      [32m+[0m[0m secret_string        = (sensitive value)
+      [32m+[0m[0m secret_string_wo     = (write-only attribute)
+      [32m+[0m[0m version_id           = (known after apply)
+      [32m+[0m[0m version_stages       = (known after apply)
+    }
+
+[1m  # module.secrets.aws_secretsmanager_secret_version.vortexpay_api_key_merchant_789[0m will be created
+[0m  [32m+[0m[0m resource "aws_secretsmanager_secret_version" "vortexpay_api_key_merchant_789" {
+      [32m+[0m[0m arn                  = (known after apply)
+      [32m+[0m[0m has_secret_string_wo = (known after apply)
+      [32m+[0m[0m id                   = (known after apply)
+      [32m+[0m[0m secret_id            = (known after apply)
+      [32m+[0m[0m secret_string        = (sensitive value)
+      [32m+[0m[0m secret_string_wo     = (write-only attribute)
+      [32m+[0m[0m version_id           = (known after apply)
+      [32m+[0m[0m version_stages       = (known after apply)
+    }
+
+[1m  # module.secrets.aws_secretsmanager_secret_version.vortexpay_oauth_merchant_123[0m will be created
+[0m  [32m+[0m[0m resource "aws_secretsmanager_secret_version" "vortexpay_oauth_merchant_123" {
+      [32m+[0m[0m arn                  = (known after apply)
+      [32m+[0m[0m has_secret_string_wo = (known after apply)
+      [32m+[0m[0m id                   = (known after apply)
+      [32m+[0m[0m secret_id            = (known after apply)
+      [32m+[0m[0m secret_string        = (sensitive value)
+      [32m+[0m[0m secret_string_wo     = (write-only attribute)
+      [32m+[0m[0m version_id           = (known after apply)
+      [32m+[0m[0m version_stages       = (known after apply)
+    }
+
+[1m  # module.secrets.aws_secretsmanager_secret_version.vortexpay_sandbox_merchant_123[0m will be created
+[0m  [32m+[0m[0m resource "aws_secretsmanager_secret_version" "vortexpay_sandbox_merchant_123" {
+      [32m+[0m[0m arn                  = (known after apply)
+      [32m+[0m[0m has_secret_string_wo = (known after apply)
+      [32m+[0m[0m id                   = (known after apply)
+      [32m+[0m[0m secret_id            = (known after apply)
+      [32m+[0m[0m secret_string        = (sensitive value)
+      [32m+[0m[0m secret_string_wo     = (write-only attribute)
+      [32m+[0m[0m version_id           = (known after apply)
+      [32m+[0m[0m version_stages       = (known after apply)
+    }
+
+[1m  # module.secrets.aws_secretsmanager_secret_version.vortexpay_webhook_secret_merchant_123[0m will be created
+[0m  [32m+[0m[0m resource "aws_secretsmanager_secret_version" "vortexpay_webhook_secret_merchant_123" {
+      [32m+[0m[0m arn                  = (known after apply)
+      [32m+[0m[0m has_secret_string_wo = (known after apply)
+      [32m+[0m[0m id                   = (known after apply)
+      [32m+[0m[0m secret_id            = (known after apply)
+      [32m+[0m[0m secret_string        = (sensitive value)
+      [32m+[0m[0m secret_string_wo     = (write-only attribute)
+      [32m+[0m[0m version_id           = (known after apply)
+      [32m+[0m[0m version_stages       = (known after apply)
+    }
+
+[1mPlan:[0m 46 to add, 0 to change, 0 to destroy.
+[0m
+Changes to Outputs:
+  [32m+[0m[0m alert_topic_arn          = (known after apply)
+  [32m+[0m[0m audit_log_group_name     = "/yuno/secrets-audit/sandbox"
+  [32m+[0m[0m demo_secret_arns         = {
+      [32m+[0m[0m merchant_123_api_key = (known after apply)
+      [32m+[0m[0m merchant_123_oauth   = (known after apply)
+      [32m+[0m[0m merchant_123_webhook = (known after apply)
+      [32m+[0m[0m merchant_456_api_key = (known after apply)
+      [32m+[0m[0m merchant_789_api_key = (known after apply)
+      [32m+[0m[0m sandbox_merchant_123 = (known after apply)
+    }
+  [32m+[0m[0m kms_key_arn              = (known after apply)
+  [32m+[0m[0m kms_key_id               = (known after apply)
+  [32m+[0m[0m payment_gateway_role_arn = (known after apply)
+  [32m+[0m[0m reconciliation_role_arn  = (known after apply)
+  [32m+[0m[0m rotation_lambda_arn      = (known after apply)
+  [32m+[0m[0m rotation_lambda_name     = "yuno-rotate-secret-sandbox"
+[90m
+─────────────────────────────────────────────────────────────────────────────[0m
+
+Note: You didn't use the -out option to save this plan, so Terraform can't
+guarantee to take exactly these actions if you run "terraform apply" now.

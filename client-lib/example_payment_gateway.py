@@ -15,11 +15,8 @@ access to vortexpay/* secrets only — database/* is denied.
 import json
 import logging
 import os
-import sys
 
-# Add client-lib to path (in production this would be a pip package)
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from client_lib.secrets_client import SecretsClient, SecretsClientError
+from secrets_client import SecretsClient, SecretsClientError
 
 logging.basicConfig(
     level=logging.INFO,
@@ -44,7 +41,9 @@ def process_payment(merchant_id: str, amount: float, currency: str) -> dict:
 
         logger.info(
             "Processing payment merchant_id=%s amount=%.2f %s",
-            merchant_id, amount, currency,
+            merchant_id,
+            amount,
+            currency,
         )
 
         # Simulate VortexPay API call (masked for logging)
@@ -105,7 +104,9 @@ def validate_webhook(merchant_id: str, payload: bytes, signature: str) -> bool:
             )
             secret_name = f"yuno/{os.environ.get('ENVIRONMENT', 'sandbox')}/vortexpay/merchant-{merchant_id}/webhook-secret"
             client.invalidate_cache(secret_name)
-            webhook_secret = client.get_vortexpay_webhook_secret(merchant_id=merchant_id)
+            webhook_secret = client.get_vortexpay_webhook_secret(
+                merchant_id=merchant_id
+            )
 
             expected = hmac.new(
                 webhook_secret.encode(),

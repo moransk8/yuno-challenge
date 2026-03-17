@@ -24,8 +24,8 @@ resource "aws_lambda_function" "rotation" {
 
   environment {
     variables = {
-      ENVIRONMENT  = var.environment
-      LOG_LEVEL    = "INFO"
+      ENVIRONMENT = var.environment
+      LOG_LEVEL   = "INFO"
       # SNS topic set at runtime via Terraform output injection
     }
   }

@@ -82,18 +82,18 @@ resource "aws_s3_bucket_policy" "cloudtrail" {
     Version = "2012-10-17"
     Statement = [
       {
-        Sid    = "AWSCloudTrailAclCheck"
-        Effect = "Allow"
+        Sid       = "AWSCloudTrailAclCheck"
+        Effect    = "Allow"
         Principal = { Service = "cloudtrail.amazonaws.com" }
-        Action   = "s3:GetBucketAcl"
-        Resource = aws_s3_bucket.cloudtrail.arn
+        Action    = "s3:GetBucketAcl"
+        Resource  = aws_s3_bucket.cloudtrail.arn
       },
       {
-        Sid    = "AWSCloudTrailWrite"
-        Effect = "Allow"
+        Sid       = "AWSCloudTrailWrite"
+        Effect    = "Allow"
         Principal = { Service = "cloudtrail.amazonaws.com" }
-        Action   = "s3:PutObject"
-        Resource = "${aws_s3_bucket.cloudtrail.arn}/AWSLogs/${var.account_id}/*"
+        Action    = "s3:PutObject"
+        Resource  = "${aws_s3_bucket.cloudtrail.arn}/AWSLogs/${var.account_id}/*"
         Condition = {
           StringEquals = {
             "s3:x-amz-acl" = "bucket-owner-full-control"
@@ -101,11 +101,11 @@ resource "aws_s3_bucket_policy" "cloudtrail" {
         }
       },
       {
-        Sid    = "DenyDelete"
-        Effect = "Deny"
+        Sid       = "DenyDelete"
+        Effect    = "Deny"
         Principal = "*"
-        Action   = ["s3:DeleteObject", "s3:DeleteObjectVersion"]
-        Resource = "${aws_s3_bucket.cloudtrail.arn}/*"
+        Action    = ["s3:DeleteObject", "s3:DeleteObjectVersion"]
+        Resource  = "${aws_s3_bucket.cloudtrail.arn}/*"
       }
     ]
   })
@@ -113,6 +113,8 @@ resource "aws_s3_bucket_policy" "cloudtrail" {
 
 # CloudTrail — captures ALL Secrets Manager API calls (tamper-evident)
 resource "aws_cloudtrail" "secrets_audit" {
+  depends_on = [aws_s3_bucket_policy.cloudtrail]
+  
   name                          = "${var.name_prefix}-secrets-audit-${var.environment}"
   s3_bucket_name                = aws_s3_bucket.cloudtrail.id
   include_global_service_events = true
@@ -122,13 +124,10 @@ resource "aws_cloudtrail" "secrets_audit" {
   cloud_watch_logs_role_arn     = aws_iam_role.cloudtrail_cw.arn
 
   event_selector {
-    read_write_type           = "All"
+    read_write_type = "All"
+    # Secrets Manager API calls (GetSecretValue, RotateSecret, etc.) are
+    # captured automatically as management events — no data_resource needed.
     include_management_events = true
-
-    data_resource {
-      type   = "AWS::SecretsManager::Secret"
-      values = ["arn:aws:secretsmanager"]
-    }
   }
 
   tags = {
@@ -157,8 +156,8 @@ resource "aws_iam_role_policy" "cloudtrail_cw" {
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      Effect = "Allow"
-      Action = ["logs:CreateLogStream", "logs:PutLogEvents"]
+      Effect   = "Allow"
+      Action   = ["logs:CreateLogStream", "logs:PutLogEvents"]
       Resource = "${aws_cloudwatch_log_group.secrets_audit.arn}:*"
     }]
   })

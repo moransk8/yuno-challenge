@@ -116,9 +116,9 @@ resource "aws_iam_role_policy" "lambda_rotation" {
         Resource = "arn:aws:logs:${var.region}:${var.account_id}:log-group:/aws/lambda/${var.name_prefix}-rotate-secret-${var.environment}:*"
       },
       {
-        Sid    = "SNSPublish"
-        Effect = "Allow"
-        Action = "sns:Publish"
+        Sid      = "SNSPublish"
+        Effect   = "Allow"
+        Action   = "sns:Publish"
         Resource = "arn:aws:sns:${var.region}:${var.account_id}:${var.name_prefix}-rotation-alerts-${var.environment}"
       }
     ]
@@ -148,8 +148,8 @@ resource "aws_iam_role" "payment_gateway" {
   })
 
   tags = {
-    Service     = "payment-gateway"
-    PCIScope    = "true"
+    Service  = "payment-gateway"
+    PCIScope = "true"
   }
 }
 
@@ -171,9 +171,9 @@ resource "aws_iam_role_policy" "payment_gateway_secrets" {
         Resource = "arn:aws:secretsmanager:${var.region}:${var.account_id}:secret:${var.name_prefix}/${var.environment}/vortexpay/*"
       },
       {
-        Sid    = "DenyDatabaseSecrets"
-        Effect = "Deny"
-        Action = "secretsmanager:*"
+        Sid      = "DenyDatabaseSecrets"
+        Effect   = "Deny"
+        Action   = "secretsmanager:*"
         Resource = "arn:aws:secretsmanager:${var.region}:${var.account_id}:secret:${var.name_prefix}/${var.environment}/database/*"
       },
       {
@@ -233,9 +233,9 @@ resource "aws_iam_role_policy" "reconciliation_secrets" {
         ]
       },
       {
-        Sid    = "DenyAllOtherMerchants"
-        Effect = "Deny"
-        Action = "secretsmanager:GetSecretValue"
+        Sid      = "DenyAllOtherMerchants"
+        Effect   = "Deny"
+        Action   = "secretsmanager:GetSecretValue"
         Resource = "arn:aws:secretsmanager:${var.region}:${var.account_id}:secret:${var.name_prefix}/${var.environment}/vortexpay/merchant-*"
         Condition = {
           StringNotLike = {
@@ -248,9 +248,9 @@ resource "aws_iam_role_policy" "reconciliation_secrets" {
         }
       },
       {
-        Sid    = "KMSDecrypt"
-        Effect = "Allow"
-        Action = ["kms:Decrypt", "kms:DescribeKey"]
+        Sid      = "KMSDecrypt"
+        Effect   = "Allow"
+        Action   = ["kms:Decrypt", "kms:DescribeKey"]
         Resource = aws_kms_key.secrets.arn
       }
     ]
@@ -310,9 +310,9 @@ resource "aws_iam_role_policy" "developer_secrets" {
         ]
       },
       {
-        Sid    = "KMSDecryptSandbox"
-        Effect = "Allow"
-        Action = ["kms:Decrypt", "kms:DescribeKey"]
+        Sid      = "KMSDecryptSandbox"
+        Effect   = "Allow"
+        Action   = ["kms:Decrypt", "kms:DescribeKey"]
         Resource = aws_kms_key.secrets.arn
       }
     ]

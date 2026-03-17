@@ -57,9 +57,9 @@ module "iam" {
 module "secrets" {
   source = "./modules/secrets"
 
-  environment    = var.environment
-  name_prefix    = var.name_prefix
-  kms_key_arn    = module.iam.kms_key_arn
+  environment         = var.environment
+  name_prefix         = var.name_prefix
+  kms_key_arn         = module.iam.kms_key_arn
   rotation_lambda_arn = module.lambda.rotation_lambda_arn
 
   depends_on = [module.iam, module.lambda]
