@@ -26,6 +26,7 @@ import argparse
 import json
 import logging
 import sys
+import os
 import time
 from datetime import datetime, timedelta, timezone
 
@@ -35,12 +36,14 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(mess
 logger = logging.getLogger("audit-queries")
 
 AWS_REGION = "us-east-1"
-LOG_GROUP = "/yuno/secrets-audit/production"
+LOG_GROUP = os.environ.get("LOG_GROUP", "/yuno/secrets-audit/sandbox")
 
 logs_client = boto3.client("logs", region_name=AWS_REGION)
 
 
-def run_insights_query(query: str, start_time: datetime, end_time: datetime) -> list[dict]:
+def run_insights_query(
+    query: str, start_time: datetime, end_time: datetime
+) -> list[dict]:
     """
     Execute a CloudWatch Logs Insights query and return results.
     CloudWatch Logs Insights is the standard way to query CloudTrail logs.
@@ -68,10 +71,7 @@ def run_insights_query(query: str, start_time: datetime, end_time: datetime) -> 
         if status == "Complete":
             rows = result["results"]
             logger.info("Query returned %d rows", len(rows))
-            return [
-                {field["field"]: field["value"] for field in row}
-                for row in rows
-            ]
+            return [{field["field"]: field["value"] for field in row} for row in rows]
         elif status in ("Failed", "Cancelled", "Timeout"):
             raise RuntimeError(f"Query failed with status: {status}")
 
@@ -101,7 +101,7 @@ def query_secret_accesses(hours: int = 24) -> None:
     print(f"\n{'='*70}")
     print(f"SECRET ACCESS LOG — Last {hours} hours")
     print(f"Query time: {datetime.now(timezone.utc).isoformat()}")
-    print("="*70)
+    print("=" * 70)
 
     rows = run_insights_query(query, start, end)
 
@@ -140,7 +140,7 @@ def query_rotation_events(days: int = 30) -> None:
 
     print(f"\n{'='*70}")
     print(f"ROTATION EVENTS — Last {days} days")
-    print("="*70)
+    print("=" * 70)
 
     rows = run_insights_query(query, start, end)
 
@@ -179,7 +179,7 @@ def query_denied_accesses() -> None:
 
     print(f"\n{'='*70}")
     print("UNAUTHORIZED ACCESS ATTEMPTS — Last 24 hours")
-    print("="*70)
+    print("=" * 70)
 
     rows = run_insights_query(query, start, end)
 
