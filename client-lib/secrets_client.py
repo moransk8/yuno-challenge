@@ -83,7 +83,9 @@ class SecretsClient:
 
         logger.info(
             "SecretsClient initialised environment=%s region=%s cache_ttl=%ds",
-            self.environment, region, cache_ttl,
+            self.environment,
+            region,
+            cache_ttl,
         )
 
     # ── Public API ────────────────────────────────────────────────────────────
@@ -181,7 +183,8 @@ class SecretsClient:
             try:
                 logger.info(
                     "Fetching secret name=%s stage=%s",
-                    secret_name, stage,
+                    secret_name,
+                    stage,
                 )
                 response = self._client.get_secret_value(
                     SecretId=secret_name,
@@ -200,14 +203,13 @@ class SecretsClient:
                 code = e.response["Error"]["Code"]
 
                 if code == "ResourceNotFoundException":
-                    raise SecretsClientError(
-                        f"Secret not found: {secret_name}"
-                    ) from e
+                    raise SecretsClientError(f"Secret not found: {secret_name}") from e
 
                 if code == "AccessDeniedException":
                     logger.error(
                         "ACCESS DENIED for secret=%s stage=%s — check IAM policy",
-                        secret_name, stage,
+                        secret_name,
+                        stage,
                     )
                     raise SecretsClientError(
                         f"Access denied to secret: {secret_name}. "
@@ -218,7 +220,9 @@ class SecretsClient:
                     logger.warning(
                         "Transient error fetching secret=%s stage=%s code=%s, "
                         "trying next stage",
-                        secret_name, stage, code,
+                        secret_name,
+                        stage,
+                        code,
                     )
                     last_error = e
                     continue
