@@ -1,0 +1,180 @@
+name: CI — Security Scanning
+
+on:
+  push:
+    branches: ["main", "develop"]
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+  security-events: write   # Required for uploading SARIF results
+  pull-requests: write
+
+jobs:
+  # ── Secret Leak Detection ───────────────────────────────────────────────────
+  secret-scanning:
+    name: Secret Scanning (Gitleaks)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for git log scanning
+
+      - name: Run Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # Fails the build if any secrets are found in commits
+        # Satisfies PCI-DSS: prevents credential leaks into Git
+
+  # ── SAST — Static Application Security Testing ─────────────────────────────
+  sast:
+    name: SAST (Semgrep)
+    runs-on: ubuntu-latest
+    container:
+      image: semgrep/semgrep
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Semgrep SAST
+        run: |
+          semgrep scan \
+            --config=auto \
+            --config=p/secrets \
+            --config=p/python \
+            --sarif \
+            --output=semgrep.sarif \
+            --error \
+            .
+        env:
+          SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
+
+      - name: Upload Semgrep SARIF
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: semgrep.sarif
+          category: semgrep
+
+  # ── IaC Security Scanning ───────────────────────────────────────────────────
+  iac-scanning:
+    name: IaC Scanning (Checkov)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Checkov on Terraform
+        uses: bridgecrewio/checkov-action@v12
+        with:
+          directory: terraform/
+          framework: terraform
+          output_format: sarif
+          output_file_path: checkov.sarif
+          # Soft-fail on known acceptable exceptions (documented in .checkov.baseline)
+          soft_fail: false
+          skip_check: >-
+            CKV_AWS_149
+        # CKV_AWS_149: Secrets Manager rotation — we use custom Lambda, not native
+
+      - name: Upload Checkov SARIF
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: checkov.sarif
+          category: checkov
+
+  # ── Python Dependency Scanning ──────────────────────────────────────────────
+  dependency-scan:
+    name: Dependency Scan (pip-audit)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install pip-audit
+        run: pip install pip-audit
+
+      - name: Audit Lambda dependencies
+        run: pip-audit -r lambda/rotate_secret/requirements.txt
+
+      - name: Audit client-lib dependencies
+        run: |
+          if [ -f client-lib/requirements.txt ]; then
+            pip-audit -r client-lib/requirements.txt
+          fi
+
+  # ── Terraform Validation ────────────────────────────────────────────────────
+  terraform-validate:
+    name: Terraform Validate & Format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.7.0"
+
+      - name: Terraform Format Check
+        working-directory: terraform/
+        run: terraform fmt -check -recursive
+
+      - name: Terraform Init (no backend)
+        working-directory: terraform/
+        run: terraform init -backend=false
+
+      - name: Terraform Validate
+        working-directory: terraform/
+        run: terraform validate
+
+  # ── Verify No Hardcoded Secrets ─────────────────────────────────────────────
+  no-plaintext-secrets:
+    name: Verify No Plaintext Secrets in IaC
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for hardcoded secret patterns
+        run: |
+          # Fail if any live VortexPay keys found in Terraform files
+          if grep -r "vp_live_[a-zA-Z0-9]\{20,\}" terraform/ --include="*.tf"; then
+            echo "❌ HARDCODED API KEY FOUND IN TERRAFORM!"
+            exit 1
+          fi
+
+          # Fail if AWS credentials found anywhere
+          if grep -rE "(AKIA|ASIA)[A-Z0-9]{16}" . --include="*.tf" --include="*.py" --include="*.yml"; then
+            echo "❌ AWS ACCESS KEY FOUND IN REPO!"
+            exit 1
+          fi
+
+          echo "✅ No hardcoded secrets detected"
+
+  # ── Summary Gate ────────────────────────────────────────────────────────────
+  security-gate:
+    name: Security Gate
+    needs:
+      - secret-scanning
+      - sast
+      - iac-scanning
+      - dependency-scan
+      - terraform-validate
+      - no-plaintext-secrets
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Check all security jobs passed
+        run: |
+          if [[ "${{ needs.secret-scanning.result }}" != "success" ]] || \
+             [[ "${{ needs.sast.result }}" != "success" ]] || \
+             [[ "${{ needs.iac-scanning.result }}" != "success" ]] || \
+             [[ "${{ needs.dependency-scan.result }}" != "success" ]] || \
+             [[ "${{ needs.terraform-validate.result }}" != "success" ]] || \
+             [[ "${{ needs.no-plaintext-secrets.result }}" != "success" ]]; then
+            echo "❌ One or more security checks failed. Merge blocked."
+            exit 1
+          fi
+          echo "✅ All security checks passed. Safe to merge."
